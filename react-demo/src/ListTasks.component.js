@@ -3,11 +3,35 @@
  */
 
 import React from 'react';
+import {connect} from 'react-redux';
 
+@connect(
+    (state) => ({
+        tasks: state.tasks
+    })
+)
 export default class ListTasks extends React.Component {
+    static propTypes = {
+        tasks: React.PropTypes.array.isRequired
+    }
+
     render() {
+        const {tasks} = this.props;
         return (
-            <h1>I'm the list task</h1>
+            <ul>
+                {
+                    (() => {
+                        return tasks.map((singleTask) => {
+                            return (
+                                <li>
+                                    <h1>{singleTask.title}</h1>
+                                    <h3>{singleTask.description}</h3>
+                                </li>
+                            );
+                        });
+                    })()
+                }
+            </ul>
         )
     }
 }

@@ -23446,9 +23446,17 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _dec, _class; /**
+	                   * Create Task form component
+	                   */
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
+
+	var _tasks = __webpack_require__(210);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23456,33 +23464,90 @@
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Create Task form component
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var CreateTask = function (_React$Component) {
+	var CreateTask = (_dec = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        tasksInCreateTask: state.tasks
+	    };
+	}, function (dispatch) {
+	    return {
+	        setTasksInCreateTask: function setTasksInCreateTask(tasks) {
+	            return dispatch((0, _tasks.setTasks)(tasks));
+	        }
+	    };
+	}), _dec(_class = function (_React$Component) {
 	    _inherits(CreateTask, _React$Component);
 
 	    function CreateTask() {
 	        _classCallCheck(this, CreateTask);
 
-	        return _possibleConstructorReturn(this, (CreateTask.__proto__ || Object.getPrototypeOf(CreateTask)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (CreateTask.__proto__ || Object.getPrototypeOf(CreateTask)).call(this));
+
+	        _this.createTaskSubmitted = _this.createTaskSubmitted.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(CreateTask, [{
+	        key: 'createTaskSubmitted',
+	        value: function createTaskSubmitted(event) {
+	            var title = this.titleInput.value;
+	            var description = this.descriptionInput.value;
+	            var newTasksArray = this.props.tasksInCreateTask.slice();
+	            newTasksArray.push({
+	                title: title,
+	                description: description
+	            });
+	            this.props.setTasksInCreateTask(newTasksArray);
+	            event.preventDefault();
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+
 	            return _react2.default.createElement(
-	                'h1',
-	                null,
-	                'I\'m the create task form'
+	                'form',
+	                { onSubmit: this.createTaskSubmitted },
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    _react2.default.createElement(
+	                        'label',
+	                        null,
+	                        'Title'
+	                    ),
+	                    _react2.default.createElement('input', { ref: function ref(inputDom) {
+	                            _this2.titleInput = inputDom;
+	                        } })
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    _react2.default.createElement(
+	                        'label',
+	                        null,
+	                        'Description'
+	                    ),
+	                    _react2.default.createElement('input', { ref: function ref(inputDom) {
+	                            _this2.descriptionInput = inputDom;
+	                        } })
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    _react2.default.createElement(
+	                        'button',
+	                        { type: 'submit' },
+	                        'Submit'
+	                    )
+	                )
 	            );
 	        }
 	    }]);
 
 	    return CreateTask;
-	}(_react2.default.Component);
-
+	}(_react2.default.Component)) || _class);
 	exports.default = CreateTask;
 
 /***/ },
@@ -23498,9 +23563,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _dec, _class, _class2, _temp; /**
+	                                   * display the list of tasks
+	                                   */
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(178);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23508,11 +23579,13 @@
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * display the list of tasks
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var ListTasks = function (_React$Component) {
+	var ListTasks = (_dec = (0, _reactRedux.connect)(function (state) {
+	    return {
+	        tasks: state.tasks
+	    };
+	}), _dec(_class = (_temp = _class2 = function (_React$Component) {
 	    _inherits(ListTasks, _React$Component);
 
 	    function ListTasks() {
@@ -23524,17 +23597,37 @@
 	    _createClass(ListTasks, [{
 	        key: 'render',
 	        value: function render() {
+	            var tasks = this.props.tasks;
+
 	            return _react2.default.createElement(
-	                'h1',
+	                'ul',
 	                null,
-	                'I\'m the list task'
+	                function () {
+	                    return tasks.map(function (singleTask) {
+	                        return _react2.default.createElement(
+	                            'li',
+	                            null,
+	                            _react2.default.createElement(
+	                                'h1',
+	                                null,
+	                                singleTask.title
+	                            ),
+	                            _react2.default.createElement(
+	                                'h3',
+	                                null,
+	                                singleTask.description
+	                            )
+	                        );
+	                    });
+	                }()
 	            );
 	        }
 	    }]);
 
 	    return ListTasks;
-	}(_react2.default.Component);
-
+	}(_react2.default.Component), _class2.propTypes = {
+	    tasks: _react2.default.PropTypes.array.isRequired
+	}, _temp)) || _class);
 	exports.default = ListTasks;
 
 /***/ }
